@@ -1,40 +1,35 @@
-# Documentação: Criação de Projeto com Next.js
+Documentação: Criação de Projeto com Next.js e Prisma
 
-## Passo 1: Criando o Projeto com Next.js
+Passo 1: Criando o Projeto com Next.js
 
 O Next.js é um framework fullstack baseado em React que oferece renderização do lado do servidor (SSR), geração estática (SSG) e outras funcionalidades otimizadas para aplicações web modernas.
 
 Para criar um novo projeto Next.js, execute o seguinte comando:
 
-```bash
 npx create-next-app@15.1.6 donalds
-```
 
 Saída esperada:
 
-```bash
 Need to install the following packages:
 create-next-app@15.1.6
 Ok to proceed? (y) y
-```
 
 Durante a configuração, será feita uma série de perguntas para personalizar o projeto:
 
-- **Would you like to use TypeScript?** → Recomendado escolher "Yes" para ter tipagem estática.
-- **Would you like to use ESLint?** → "Yes" para manter boas práticas de código.
-- **Would you like to use Tailwind CSS?** → "Yes" se desejar usar um framework de estilização rápido.
-- **Would you like your code inside a `src/` directory?** → "Yes" para organizar melhor os arquivos do projeto.
-- **Would you like to use App Router? (recommended)** → "Yes", pois é o novo sistema de roteamento do Next.js.
-- **Would you like to use Turbopack for `next dev`?** → "Yes" para um desempenho otimizado durante o desenvolvimento.
-- **Would you like to customize the import alias (`@/*` by default)?** → "Yes" para facilitar importações.
+Would you like to use TypeScript? → Recomendado escolher "Yes" para ter tipagem estática.
+Would you like to use ESLint? → "Yes" para manter boas práticas de código.
+Would you like to use Tailwind CSS? → "Yes" se desejar usar um framework de estilização rápido.
+Would you like your code inside a src/ directory? → "Yes" para organizar melhor os arquivos do projeto.
+Would you like to use App Router? (recommended) → "Yes", pois é o novo sistema de roteamento do Next.js.
+Would you like to use Turbopack for next dev? → "Yes" para um desempenho otimizado durante o desenvolvimento.
+Would you like to customize the import alias (@/* by default)? → "Yes" para facilitar importações.
 
-Após responder as perguntas, o Next.js criará a estrutura do projeto dentro do diretório `donalds`.
+Após responder as perguntas, o Next.js criará a estrutura do projeto dentro do diretório donalds.
 
-### Estrutura do Projeto
+Estrutura do Projeto
 
 Após a instalação, o diretório conterá a seguinte estrutura:
 
-```
 donalds/
 ├── node_modules/
 ├── public/
@@ -47,43 +42,45 @@ donalds/
 ├── package.json  # Dependências e scripts do projeto
 ├── README.md  # Documentação do projeto
 └── tsconfig.json (se TypeScript for habilitado)
-```
 
-### Executando o Projeto
+Executando o Projeto
 
 Depois de criado, entre no diretório do projeto:
 
-```bash
 cd donalds
-```
 
 Instale as dependências caso necessário:
 
-```bash
 npm install
-```
 
 Inicie o servidor de desenvolvimento:
 
-```bash
 npm run dev
-```
 
 O Next.js iniciará um servidor local e o projeto poderá ser acessado em:
 
-```
 http://localhost:3000
-```
 
----
+Passo 2: Configurando Prisma
 
+Prisma é um ORM moderno para Node.js e TypeScript, utilizado para interagir com bancos de dados de forma simples e eficiente.
+
+Instalando Prisma
+
+Execute os seguintes comandos para instalar o Prisma e o client:
 
 npm install prisma@6.2.1
+npm install @prisma/client@6.2.1
 
-npm install prisma/client@6.2.1
-
+Inicialize o Prisma no projeto:
 
 npx prisma init
+
+Isso criará um diretório prisma/ com o arquivo schema.prisma, onde será definida a estrutura do banco de dados.
+
+Definição dos Modelos no Prisma
+
+Abaixo estão os modelos definidos no schema.prisma para o projeto:
 
 model Restaurant {
   id        String      @id @default(uuid())
@@ -162,9 +159,52 @@ enum ConsumptionMethod {
   DELIVERY
   DINE_IN
 }
+Explicação das Tabelas e Recursos Utilizados
 
-npx prisma formatter
+Restaurant: Representa um restaurante, armazenando informações como nome, imagens, categorias do cardápio, produtos e pedidos.
 
-Criar um banco no neonbd e copiar o codigo e colar no .env
+MenuCategory: Define categorias dentro do menu de um restaurante, relacionando-se diretamente com produtos e restaurantes.
+
+Product: Contém informações sobre um produto do cardápio, incluindo nome, descrição, preço, imagem e ingredientes.
+
+Order: Registra um pedido feito em um restaurante, armazenando total do pedido, status e método de consumo.
+
+OrderProduct: Tabela intermediária que vincula produtos a pedidos, permitindo a gestão de quantidades e preços.
+
+Enums OrderStatus e ConsumptionMethod: Enumeram os possíveis estados de um pedido e os métodos de consumo.
+
+Recursos Utilizados para Relações
+
+@relation: Define chaves estrangeiras entre tabelas. Exemplo: restaurantId em MenuCategory referencia um Restaurant.
+
+@id @default(uuid()): Define identificadores únicos para registros, usando UUIDs para tabelas como Restaurant e Product.
+
+@default(autoincrement()): Utilizado para IDs automáticos em Order, garantindo valores sequenciais.
+
+@updatedAt: Atualiza automaticamente o campo sempre que um registro é modificado.
+
+@default(now()): Define valores padrão como a data e hora de criação do registro.
+
+onDelete: Cascade: Deleta em cascada registro relacionados ao id relacionado, exemplo: tudo que for do restaurante X sera apagado nas demais tabelas referenciadas.
+
+Formatando e Migrando o Banco de Dados
+
+Formate o schema Prisma:
+
+npx prisma format
+
+Crie um banco no NeonDB e copie a URL de conexão para o arquivo .env do projeto.
+
+Aplique as migrações para criar as tabelas no banco de dados:
 
 npx prisma migrate dev
+
+npm install -D ts-node@10.9.2
+
+  },
+  
+    "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
+  },
+
+npx prisma db seed
