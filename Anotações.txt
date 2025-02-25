@@ -1,0 +1,170 @@
+# Documentação: Criação de Projeto com Next.js
+
+## Passo 1: Criando o Projeto com Next.js
+
+O Next.js é um framework fullstack baseado em React que oferece renderização do lado do servidor (SSR), geração estática (SSG) e outras funcionalidades otimizadas para aplicações web modernas.
+
+Para criar um novo projeto Next.js, execute o seguinte comando:
+
+```bash
+npx create-next-app@15.1.6 donalds
+```
+
+Saída esperada:
+
+```bash
+Need to install the following packages:
+create-next-app@15.1.6
+Ok to proceed? (y) y
+```
+
+Durante a configuração, será feita uma série de perguntas para personalizar o projeto:
+
+- **Would you like to use TypeScript?** → Recomendado escolher "Yes" para ter tipagem estática.
+- **Would you like to use ESLint?** → "Yes" para manter boas práticas de código.
+- **Would you like to use Tailwind CSS?** → "Yes" se desejar usar um framework de estilização rápido.
+- **Would you like your code inside a `src/` directory?** → "Yes" para organizar melhor os arquivos do projeto.
+- **Would you like to use App Router? (recommended)** → "Yes", pois é o novo sistema de roteamento do Next.js.
+- **Would you like to use Turbopack for `next dev`?** → "Yes" para um desempenho otimizado durante o desenvolvimento.
+- **Would you like to customize the import alias (`@/*` by default)?** → "Yes" para facilitar importações.
+
+Após responder as perguntas, o Next.js criará a estrutura do projeto dentro do diretório `donalds`.
+
+### Estrutura do Projeto
+
+Após a instalação, o diretório conterá a seguinte estrutura:
+
+```
+donalds/
+├── node_modules/
+├── public/
+├── src/
+│   ├── app/  # Diretório de páginas com o novo App Router
+│   ├── components/  # Componentes reutilizáveis
+│   ├── styles/  # Estilização do projeto
+├── .eslintrc.json  # Configuração do ESLint
+├── .gitignore  # Arquivos ignorados pelo Git
+├── package.json  # Dependências e scripts do projeto
+├── README.md  # Documentação do projeto
+└── tsconfig.json (se TypeScript for habilitado)
+```
+
+### Executando o Projeto
+
+Depois de criado, entre no diretório do projeto:
+
+```bash
+cd donalds
+```
+
+Instale as dependências caso necessário:
+
+```bash
+npm install
+```
+
+Inicie o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+O Next.js iniciará um servidor local e o projeto poderá ser acessado em:
+
+```
+http://localhost:3000
+```
+
+---
+
+
+npm install prisma@6.2.1
+
+npm install prisma/client@6.2.1
+
+
+npx prisma init
+
+model Restaurant {
+  id        String      @id @default(uuid())
+  name      String
+  slug      String
+  descripton    String
+  avatarImageUrl      String
+  coverImageUrl       String
+  menuCategories MenuCategory[]
+  products Product[]
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MenuCategory {
+  id        String      @id @default(uuid())
+  name      String
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id        String      @id @default(uuid())
+  name      String
+  descripton    String
+  price     Float
+  imageUrl  String
+  ingredients String
+  restaurantId String
+  resturant Restaurant @relation(fields: [restaurantId], references: [id])
+  menuCategory MenuCategory @relation(fields: [menuCategoryId], references: [id])
+  menuCategoryId String
+  orderProducts OrderProduct[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  total     Float
+  status     OrderStatus
+  consumptionMethod ConsumptionMethod
+  orderProducts OrderProduct[]
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderProduct {
+  id        String      @id @default(uuid())
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
+  quantity Int
+  price Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PREPARATION
+  CONFIRMED
+  DELIVERED
+  CANCELLED
+  FINISHED
+}
+
+enum ConsumptionMethod {
+  DELIVERY
+  DINE_IN
+}
+
+npx prisma formatter
+
+Criar um banco no neonbd e copiar o codigo e colar no .env
+
+npx prisma migrate dev
