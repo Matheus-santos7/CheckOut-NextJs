@@ -199,12 +199,90 @@ Aplique as migrações para criar as tabelas no banco de dados:
 
 npx prisma migrate dev
 
+Populando o Banco de Dados (Seeding)
+
+Instale o ts-node como dependência de desenvolvimento:
+
 npm install -D ts-node@10.9.2
 
-  },
-  
-    "prisma": {
-    "seed": "ts-node ./prisma/seed.ts"
-  },
+Adicione o script de seed no package.json:
+
+"prisma": {
+  "seed": "ts-node ./prisma/seed.ts"
+}
+
+Execute o comando para popular o banco:
 
 npx prisma db seed
+
+Agora o Prisma está configurado e pronto para uso no projeto.
+
+
+📌 Roteamento no Next.js com App Router
+No Next.js, ao utilizar o App Router, todos os arquivos dentro da pasta @app se tornam automaticamente rotas acessíveis na aplicação.
+
+🛠️ Exemplo de Estrutura de Diretórios
+plaintext
+Copiar
+Editar
+src/
+└── app/
+    ├── page.tsx       # Rota: "/"
+    ├── about/
+    │   ├── page.tsx   # Rota: "/about"
+    ├── contact/
+    │   ├── page.tsx   # Rota: "/contact"
+🖥️ Como Funciona?
+Cada pasta dentro de app/ representa um segmento da URL.
+Arquivos page.tsx definem páginas acessíveis via navegador.
+O Next.js cuida automaticamente do roteamento sem necessidade de configurações extras.
+✅ Exemplo de Código
+Criando uma página "Sobre" (about/page.tsx):
+
+tsx
+Copiar
+Editar
+export default function AboutPage() {
+  return (
+    <main>
+      <h1>Sobre Nós</h1>
+      <p>Bem-vindo à página sobre nosso projeto!</p>
+    </main>
+  );
+}
+🔗 Acessível em: http://localhost:3000/about
+
+Dessa forma, com o App Router, o roteamento se torna mais intuitivo e organizado. 🚀
+
+
+npx shadcn@2.3.0 init
+Need to install the following packages:
+shadcn@2.3.0
+Ok to proceed? (y) y
+
+✔ Preflight checks.
+✔ Verifying framework. Found Next.js.
+✔ Validating Tailwind CSS.
+✔ Validating import alias.
+✔ Which style would you like to use? › Default
+✔ Which color would you like to use as the base color? › Neutral
+✔ Would you like to use CSS variables for theming? … no / yes
+✔ Writing components.json.
+✔ Checking registry.
+✔ Updating tailwind.config.ts
+✔ Updating src/app/globals.css
+  Installing dependencies.
+
+It looks like you are using React 19. 
+Some packages may fail to install due to peer dependency issues in npm (see https://ui.shadcn.com/react-19).
+
+✔ How would you like to proceed? › Use --legacy-peer-deps
+✔ Installing dependencies.
+✔ Created 1 file:
+  - src/lib/utils.ts
+
+Success! Project initialization completed.
+You may now add components.
+
+matheus@matheus-note:~/Documentos/MatheusParticular/checkout/donalds$ 
+
