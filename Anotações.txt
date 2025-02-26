@@ -284,5 +284,63 @@ Some packages may fail to install due to peer dependency issues in npm (see http
 Success! Project initialization completed.
 You may now add components.
 
-matheus@matheus-note:~/Documentos/MatheusParticular/checkout/donalds$ 
+npx shadcn@2.3.0 add input
 
+npm install -D eslint-plugin-simple-import-sort@12.1.1
+
+import { FlatCompat } from "@eslint/eslintrc";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+    },
+  },
+];
+
+export default eslintConfig;
+
+
+criar uma pasta .vscode com um arquivo settings.json com o seguinte codigo para correção ao salvar um arquivo e salvar automatico
+
+{
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto"
+      }
+    ],
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
+
+Pluggin para formatar as classes tailwindcss de formar padronizada
+
+npm install -D prettier prettier-plugin-tailwindcss@0.6.5
+
+.prettierrc.json 
+
+{
+    "plugins": ["prettier-plugin-tailwindcss"]
+}
