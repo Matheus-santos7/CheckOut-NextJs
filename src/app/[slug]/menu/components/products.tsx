@@ -1,17 +1,19 @@
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface ProductProps {
   products: Product[];
 }
 
 const Products = ({ products }: ProductProps) => {
+  const {slug} = useParams<{slug: string}>();
   return (
     <div className="spacy-y-3 px-3">
       {products.map((product) => (
         <Link
-          href="?"
+          href={`/${slug}/menu/${product.id}`}
           key={product.id}
           className="flex items-center justify-between gap-10 py-3 p-4 border-b"
         >
